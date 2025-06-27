@@ -16,7 +16,9 @@ const LiveSheet = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userId = location.state?.userId;
-  const API_URL = "http://localhost:3001";
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     document.title = "Patent Analyst Dashboard";

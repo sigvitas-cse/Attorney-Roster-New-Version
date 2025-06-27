@@ -11,6 +11,103 @@ import NewProfiles from "../components/AdminDashBoard/IndivisualComponents/newPr
 import RemovedProfiles from "../components/AdminDashBoard/IndivisualComponents/removedProfiles";
 import UpdatedProfiles from "../components/AdminDashBoard/IndivisualComponents/updatedProfiles";
 
+// Home Component
+const Home = () => {
+  return (
+    <div className="relative bg-white rounded-xl p-6 text-[#1E293B] text-center h-full flex flex-col">
+      {/* Hero Section */}
+      <div className="animate-fadeIn">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          Welcome to Patent Analyst Dashboard
+        </h1>
+        <p className="text-lg md:text-xl mb-6 max-w-2xl mx-auto">
+          Analyze live patent data, upload files, and manage notes with our intuitive tools.
+          Explore your options below to get started.
+        </p>
+        <div className="flex gap-4 justify-center mb-8">
+          <button
+            onClick={() => document.querySelector(`[title="View Live Sheet"]`).click()}
+            className="px-6 py-3 bg-white text-[#38BDF8] font-semibold rounded-lg hover:bg-[#F8FAFC] transition-all duration-200 shadow-md"
+          >
+            View Live Sheet
+          </button>
+          <button
+            onClick={() => document.querySelector(`[title="View Upload"]`).click()}
+            className="px-6 py-3 bg-transparent text-[#38BDF8] font-semibold rounded-lg hover:border-38BDF8 hover:border-2 hover:text-[#38BDF8] transition-all duration-200"
+          >
+            Start Upload
+          </button>
+          <button
+            onClick={() => document.querySelector(`[title="View Note"]`).click()}
+            className="px-6 py-3 bg-transparent text-[#38BDF8] font-semibold rounded-lg hover:border-38BDF8 hover:border-2 hover:text-[#38BDF8] transition-all duration-200"
+          >
+            Open Notes
+          </button>
+        </div>
+      </div>
+
+      {/* Featured Image */}
+      <div className="w-full max-w-3xl mb-8">
+        <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
+          <img
+            src="https://via.placeholder.com/600x300?text=Patent+Dashboard+Preview"
+            alt="Patent Dashboard Preview"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Scrollable Content Section */}
+      <div className="w-full max-w-4xl mx-auto space-y-6 overflow-y-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-[#38BDF8]/50 scrollbar-track-[#E2E8F0]">
+        {/* Card 1: Live Data Preview */}
+        <div className="bg-white/10 p-4 rounded-lg shadow-md animate-slideUp">
+          <h3 className="text-xl font-semibold mb-2">Live Data Overview</h3>
+          <img
+            src="https://via.placeholder.com/400x200?text=Live+Data+Preview"
+            alt="Live Data Overview"
+            className="w-full h-48 object-cover rounded"
+          />
+          <p className="mt-2 text-sm">Monitor real-time patent updates and edits.</p>
+        </div>
+
+        {/* Card 2: Upload Demo */}
+        <div className="bg-white/10 p-4 rounded-lg shadow-md animate-slideUp delay-100">
+          <h3 className="text-xl font-semibold mb-2">File Upload Guide</h3>
+          <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
+            <video
+              className="w-full h-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="https://via.placeholder.com/400x200?text=Upload+Demo"
+            >
+              <source
+                src="https://cdn.pixabay.com/video/2023/04/12/125627-824999141_h264.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <p className="mt-2 text-sm">Learn how to upload Excel files efficiently.</p>
+        </div>
+
+        {/* Card 3: Notes Preview */}
+        <div className="bg-white/10 p-4 rounded-lg shadow-md animate-slideUp delay-200">
+          <h3 className="text-xl font-semibold mb-2">Note-Taking</h3>
+          <div className="w-full h-40 bg-gradient-to-br from-[#60A5FA] to-[#38BDF8] rounded flex items-center justify-center">
+            <p className="text-white">Note Placeholder (5 Active Notes)</p>
+          </div>
+          <p className="mt-2 text-sm">Track your observations and updates.</p>
+        </div>
+      </div>
+
+      {/* Optional Animation for Visual Appeal */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 animate-pulse" />
+    </div>
+  );
+};
+
 // ErrorBoundary Component
 class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null };
@@ -62,10 +159,13 @@ function EmployeeDashboard() {
   const userId = location.state?.userId;
   const [editedUsers, setEditedUsers] = useState({});
   const [selectAll, setSelectAll] = useState(false);
-  const [activeComponent, setActiveComponent] = useState("liveSheet");
+  const [activeComponent, setActiveComponent] = useState("home");
   const [showDropdown, setShowDropdown] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     document.title = "Patent Analyst Dashboard";
@@ -84,7 +184,7 @@ function EmployeeDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const API_URL = "http://localhost:3001";
+      
       const response = await axios.get(`${API_URL}/api/fetch-users?userId=${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
       });
@@ -160,7 +260,7 @@ function EmployeeDashboard() {
       return;
     }
     try {
-      const API_URL = "http://localhost:3001";
+      
       await axios.put(`${API_URL}/api/update-users`, updates, {
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
       });
@@ -225,11 +325,11 @@ function EmployeeDashboard() {
 
   const handleUploadClose = () => {
     setShowUpload(false);
-    setActiveComponent("liveSheet"); // Return to LiveSheet after closing
+    setActiveComponent("liveSheet");
   };
 
   const handleUploadSuccess = () => {
-    fetchUsers(); // Refetch data after successful upload
+    fetchUsers();
   };
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
@@ -283,11 +383,17 @@ function EmployeeDashboard() {
         <button
           onClick={handleLogout}
           disabled={loading}
-          className={`px-4 py-1.5 bg-gradient-to-r from-[#38BDF8] to-[#60A5FA] text-white text-xs font-semibold rounded-lg hover:from-[#2B9FE7] hover:to-[#4B8EF1] transition-all duration-200 shadow-md hover:shadow-lg ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
+          className={`px-4 py-2 bg-gradient-to-r from-[#38BDF8] to-[#60A5FA] text-white text-sm font-semibold rounded-lg hover:from-[#2B9FE7] hover:to-[#4B8EF1] active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg ${
+            loading ? "opacity-50 cursor-not-allowed flex items-center justify-center" : ""
           }`}
         >
-          {loading ? "Logging Out..." : "Log Out"}
+          {loading ? (
+            <>
+              <i className="fa-solid fa-spinner fa-spin mr-2 text-sm" /> Logging Out...
+            </>
+          ) : (
+            "Log Out"
+          )}
         </button>
       </header>
 
@@ -390,6 +496,7 @@ function EmployeeDashboard() {
         >
           <ErrorBoundary>
             <div className="bg-white rounded-xl shadow-md border border-[#CBD5E1] p-6">
+              {activeComponent === "home" && <Home />}
               {activeComponent === "liveSheet" && (
                 <LiveSheet
                   users={users}
@@ -420,7 +527,7 @@ function EmployeeDashboard() {
                   onUploadSuccess={handleUploadSuccess}
                 />
               )}
-              {activeComponent === "note" && <Note userId={userId} />}
+              {activeComponent === "note" && userId && <Note userId={userId} />}
               {activeComponent === "newProfiles" && <NewProfiles />}
               {activeComponent === "removedProfiles" && <RemovedProfiles />}
               {activeComponent === "updatedProfiles" && <UpdatedProfiles />}
@@ -450,13 +557,29 @@ function EmployeeDashboard() {
       {/* Inline CSS for Animations */}
       <style>
         {`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
           @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
           }
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeIn {
+            animation: fadeIn 1s ease-out;
+          }
           .animate-slideIn {
             animation: slideIn 0.4s ease-out;
           }
+          .animate-slideUp {
+            animation: slideUp 0.8s ease-out;
+          }
+          .delay-100 { animation-delay: 0.1s; }
+          .delay-200 { animation-delay: 0.2s; }
           .scrollbar-thin::-webkit-scrollbar {
             width: 5px;
             height: 5px;
