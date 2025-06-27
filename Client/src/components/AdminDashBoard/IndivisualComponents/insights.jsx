@@ -368,16 +368,18 @@ const InsightsData = () => {
       <div className="bg-gradient-to-r from-[#38BDF8]/80 to-[#60A5FA]/80 text-white p-1 rounded-t-md mb-2">
         <h2 className="text-[12px] font-semibold text-center">Data Insights [{insightPages.length}]</h2>
       </div>
-      {/* Navigation Bar */}
-      <div className="mb-2 flex flex-wrap gap-1">
+      {/* Text-based Navigation with Separators */}
+      <div className="mb-2 flex flex-wrap gap-2">
         {insightPages.map((insight, index) => (
-          <button
-            key={insight.id}
-            onClick={() => handleSelectInsight(index)}
-            className={`px-2 py-1 text-[11px] rounded-md transition-colors duration-150 ${selectedInsightIndex === index ? 'bg-[#38BDF8] text-white' : 'bg-gray-200 text-[#1E293B] hover:bg-gray-300'}`}
-          >
-            {insight.title}
-          </button>
+          <React.Fragment key={insight.id}>
+            <span
+              onClick={() => handleSelectInsight(index)}
+              className={`text-[11px] cursor-pointer ${selectedInsightIndex === index ? 'font-bold underline text-blue-600' : 'hover:text-blue-500 transition-colors duration-150'}`}
+            >
+              {insight.title}
+            </span>
+            {index < insightPages.length - 1 && <span className="text-[11px] text-gray-400"> | </span>}
+          </React.Fragment>
         ))}
       </div>
       <div className="overflow-x-auto overflow-y-auto max-h-[70vh] bg-white rounded-md scrollbar-thin scrollbar-thumb-[#38BDF8]/70 scrollbar-track-gray-100 scrollbar-thumb-rounded-full scrollbar-w-1.5" style={{ scrollBehavior: 'smooth' }}>

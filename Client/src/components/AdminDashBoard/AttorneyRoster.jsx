@@ -474,7 +474,7 @@ const AttorneyRoster = () => {
             Note
           </button>
           <button
-            className="text-[#38BDF8] px-2 py-0.5 rounded-md text-[10px] font-medium hover:bg-[#38BDF8] hover:text-white transition-all duration-150"
+            className="text-[#8B5CF6] px-2 py-0.5 rounded-md text-[10px] font-medium hover:bg-[#8B5CF6] hover:text-white transition-all duration-150"
             onClick={() => setActiveView("insights")}
           >
             Insights
