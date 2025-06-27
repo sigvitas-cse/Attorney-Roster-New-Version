@@ -10,6 +10,10 @@ import Note from "../components/EmployeeDashboard/note";
 import NewProfiles from "../components/AdminDashBoard/IndivisualComponents/newProfiles";
 import RemovedProfiles from "../components/AdminDashBoard/IndivisualComponents/removedProfiles";
 import UpdatedProfiles from "../components/AdminDashBoard/IndivisualComponents/updatedProfiles";
+import userdataimg from '../assets/userdata.png';
+import fileuploading from '../assets/datauploading.mp4';
+import empdashboardpreview from "../assets/empdashboardpreview.jpg";
+
 
 // Home Component
 const Home = () => {
@@ -47,10 +51,10 @@ const Home = () => {
       </div>
 
       {/* Featured Image */}
-      <div className="w-full max-w-3xl mb-8">
+      <div className="w-full h-auto max-w-3xl mb-8">
         <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
           <img
-            src="https://via.placeholder.com/600x300?text=Patent+Dashboard+Preview"
+            src={empdashboardpreview}
             alt="Patent Dashboard Preview"
             className="w-full h-full object-cover"
           />
@@ -63,9 +67,9 @@ const Home = () => {
         <div className="bg-white/10 p-4 rounded-lg shadow-md animate-slideUp">
           <h3 className="text-xl font-semibold mb-2">Live Data Overview</h3>
           <img
-            src="https://via.placeholder.com/400x200?text=Live+Data+Preview"
+            src={userdataimg}
             alt="Live Data Overview"
-            className="w-full h-48 object-cover rounded"
+            className="w-full h-full object-cover rounded"
           />
           <p className="mt-2 text-sm">Monitor real-time patent updates and edits.</p>
         </div>
@@ -83,7 +87,7 @@ const Home = () => {
               poster="https://via.placeholder.com/400x200?text=Upload+Demo"
             >
               <source
-                src="https://cdn.pixabay.com/video/2023/04/12/125627-824999141_h264.mp4"
+                src={fileuploading}
                 type="video/mp4"
               />
               Your browser does not support the video tag.
