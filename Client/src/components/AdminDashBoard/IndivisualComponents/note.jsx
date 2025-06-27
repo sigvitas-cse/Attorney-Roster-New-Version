@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AdminInsights = () => {
+const Note = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const adminUserId = location.state?.userId;
@@ -21,7 +21,8 @@ const AdminInsights = () => {
   const [selectedNotes, setSelectedNotes] = useState(new Set());
   const notesListRef = useRef(null);
 
-  const API_URL = "http://localhost:3001";
+const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     document.title = 'Admin Insights - Patent Analyst Dashboard';
@@ -390,4 +391,4 @@ const AdminInsights = () => {
   );
 };
 
-export default AdminInsights;
+export default Note;

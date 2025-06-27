@@ -53,7 +53,9 @@ function LoginPage() {
 
     setLoading(true);
 
-    const API_URL = 'http://localhost:3001';
+    const API_URL = import.meta.env.VITE_API_URL;
+
+
 
     try {
       const response = await axios.post(`${API_URL}/api/check-login`, { userId, password, userType });

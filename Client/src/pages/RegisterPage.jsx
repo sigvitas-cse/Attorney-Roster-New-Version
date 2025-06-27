@@ -42,8 +42,9 @@ function NewUserLoginPage() {
       return;
     }
 
-    // const API_URL = import.meta.env.VITE_API_URL || 'https://roster1.sigvitas.com';
-    const API_URL = 'http://localhost:3001';
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
 
 
     setLoading(true);

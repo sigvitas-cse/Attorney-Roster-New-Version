@@ -7,7 +7,8 @@ function IndivisualProfilesUpdated({ onClick }) {
   const [error, setError] = useState("");
   const [searchField, setSearchField] = useState("regCode");
 
-  const API_URL = process.env.REACT_APP_API_URL || "https://roster1.sigvitas.com";
+  const API_URL = process.env.REACT_APP_API_URL;
+
 
   const handleSearch = async () => {
     if (!regCodeInput.trim()) {

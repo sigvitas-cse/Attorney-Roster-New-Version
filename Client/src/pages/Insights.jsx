@@ -16,8 +16,9 @@ const Insights = () => {
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [noteTitle, setNoteTitle] = useState('');
 
-  // const API_URL = import.meta.env.VITE_API_URL || 'https://roster1.sigvitas.com';
-    const API_URL = 'http://localhost:3001';
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
 
   useEffect(() => {
     document.title = 'Insights - Patent Analyst Dashboard';

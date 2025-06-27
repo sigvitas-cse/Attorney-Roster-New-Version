@@ -6,7 +6,7 @@ import NewUserLoginPage from '../pages/RegisterPage.jsx';
 import EmployeeDashboard from '../pages/EmployeeDashboard.jsx';
 import ForgotPassword from '../pages/ForgotPassword.jsx';
 import Insights from '../pages/Insights.jsx';
-import AdminInsights from '../components/AdminDashBoard/AdminInsights.jsx';
+import Note from '../components/AdminDashBoard/IndivisualComponents/note.jsx';
 import Login from '../pages/LoginPage.jsx';
 
 const router = createBrowserRouter([
@@ -43,8 +43,8 @@ const router = createBrowserRouter([
         element: <Insights />,
       },
       {
-        path: 'AdminInsights',
-        element: <AdminInsights />,
+        path: 'note',
+        element: <Note />,
       },
     ],
   },

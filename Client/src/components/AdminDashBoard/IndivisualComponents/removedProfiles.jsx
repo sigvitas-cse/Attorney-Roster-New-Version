@@ -7,7 +7,9 @@ function RemovedProfiles() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
-  const API_URL = "http://localhost:3001";
+ const API_URL = import.meta.env.VITE_API_URL;
+
+
 
   useEffect(() => {
     const fetchRemovedProfiles = async () => {

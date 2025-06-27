@@ -7,7 +7,8 @@ import NewProfilesUpdated from "./IndivisualComponents/newProfiles";
 import RemovedProfiles from "./IndivisualComponents/removedProfiles";
 import NewProfilesUpdated2 from "./IndivisualComponents/updatedProfiles";
 import { useLocation, useNavigate } from "react-router-dom";
-import AdminInsights from "./AdminInsights";
+import AdminInsights from "./IndivisualComponents/note";
+import InsightsData from "./IndivisualComponents/insights";
 
 
 
@@ -111,7 +112,10 @@ const AttorneyRoster = () => {
   const initialLimit = 5000;
   const batchLimit = 1000;
   const rowsPerPage = 500;
-  const API_URL = "http://localhost:3001";
+  
+ const API_URL = import.meta.env.VITE_API_URL;
+
+
 
   const totalPages = totalRecords ? Math.ceil(totalRecords / rowsPerPage) : 1;
 
@@ -399,8 +403,10 @@ const AttorneyRoster = () => {
         return <RemovedProfiles />; // Assume refactored similarly
       case "updatedProfiles":
         return <NewProfilesUpdated2 />; // Assume refactored similarly
+      case "note":
+        return <AdminInsights />;
       case "insights":
-        return <AdminInsights />; // Assume refactored similarly
+        return <InsightsData />; // Assume refactored similarly
       default:
         return null;
     }
@@ -433,7 +439,7 @@ const AttorneyRoster = () => {
               placeholder={`Search ${searchField}...`}
               value={globalSearch}
               onChange={(e) => setGlobalSearch(e.target.value)}
-              className="flex-1 p-1 h-6 border-none rounded-r-md text-[10px] focus:outline-none focus:ring-1 focus:ring-[#38BDF8]"
+              className="w-24 flex-1 p-1 h-6 border-none rounded-r-md text-[10px] focus:outline-none focus:ring-1 focus:ring-[#38BDF8]"
             />
             <FaSearch className="absolute right-1 top-1/2 transform -translate-y-1/2 text-[#64748B] text-[10px]" />
           </div>
@@ -460,6 +466,12 @@ const AttorneyRoster = () => {
             onClick={() => setActiveView("updatedProfiles")}
           >
             Updated
+          </button>
+          <button
+            className="text-[#38BDF8] px-2 py-0.5 rounded-md text-[10px] font-medium hover:bg-[#38BDF8] hover:text-white transition-all duration-150"
+            onClick={() => setActiveView("note")}
+          >
+            Note
           </button>
           <button
             className="text-[#38BDF8] px-2 py-0.5 rounded-md text-[10px] font-medium hover:bg-[#38BDF8] hover:text-white transition-all duration-150"
