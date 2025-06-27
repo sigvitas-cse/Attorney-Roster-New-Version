@@ -30,7 +30,7 @@ const API_URL = import.meta.env.VITE_API_URL;
     const token = localStorage.getItem('authToken');
     if (!token || !adminUserId) {
       toast.error('Please log in to access Admin Insights');
-      navigate('/AdminLoginPage');
+      navigate('/Login');
       return;
     }
     const lastNoteId = localStorage.getItem(`lastAdminNoteId_${adminUserId}`);

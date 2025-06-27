@@ -39,7 +39,7 @@ function App() {
   };
 
   // Enhanced condition to handle variations in pathname
-  const showHeader = !['/AdminDashboard', '/AdminDashboard/'].includes(location.pathname);
+  const showHeader = !['/AdminDashboard', '/AdminDashboard/','/EmployeeDashBoard', '/EmployeeDashBoard/'].includes(location.pathname);
   console.log('Show Header:', showHeader, 'for pathname:', location.pathname);
 
   return (

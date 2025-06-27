@@ -450,12 +450,12 @@ function EmployeeDashboard() {
       {/* Inline CSS for Animations */}
       <style>
         {`
-          @keyframes slideIn {
+          @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
           }
-          .animate-slideIn {
-            animation: slideIn 0.4s ease-out;
+          .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
           }
           .scrollbar-thin::-webkit-scrollbar {
             width: 5px;

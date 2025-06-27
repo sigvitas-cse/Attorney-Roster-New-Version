@@ -40,7 +40,7 @@ const API_URL = import.meta.env.VITE_API_URL;
     'Country',
     'Zipcode',
     'Phone Number',
-    'Reg Code',
+    'Reg No.',
     'Attorney',
   ];
 

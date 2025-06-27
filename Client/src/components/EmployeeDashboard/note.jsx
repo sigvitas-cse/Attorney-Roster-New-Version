@@ -1,16 +1,13 @@
-// Roster-Data/src/pages/Insights.jsx
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Insights = () => {
-  const location = useLocation();
+const Note = ({ userId }) => {
   const navigate = useNavigate();
-  const userId = location.state?.userId;
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState('');
   const [selectedNoteId, setSelectedNoteId] = useState(null);
@@ -18,20 +15,15 @@ const Insights = () => {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-
-
   useEffect(() => {
     document.title = 'Insights - Patent Analyst Dashboard';
-    // Clear history state to prevent undo/redo navigation
     window.history.replaceState(null, '', window.location.pathname);
-    // Check authentication
     const token = localStorage.getItem('authToken');
     if (!token || !userId) {
       toast.error('Please log in to access Insights');
       navigate('/EmpLoginPage');
       return;
     }
-    // Fetch notes with last selected note
     const lastNoteId = localStorage.getItem(`lastNoteId_${userId}`);
     fetchNotes(lastNoteId);
   }, [navigate, userId]);
@@ -166,7 +158,7 @@ const Insights = () => {
   const quillFormats = ['header', 'bold', 'italic', 'underline', 'strike', 'list', 'bullet', 'align', 'link'];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <div className="min-h-[calc(100vh-180px)] bg-gray-100 p-4 sm:p-6">
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Insights</h1>
@@ -249,4 +241,4 @@ const Insights = () => {
   );
 };
 
-export default Insights;
+export default Note;

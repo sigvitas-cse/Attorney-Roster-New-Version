@@ -155,7 +155,7 @@ function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Admin Dashboard - Triangle IP";
+    document.title = "Admin Dashboard";
     window.history.replaceState(null, "", window.location.pathname);
     const authToken = localStorage.getItem("authToken");
     const userType = localStorage.getItem("userType");

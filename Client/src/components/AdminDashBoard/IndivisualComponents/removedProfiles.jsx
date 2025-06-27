@@ -40,7 +40,7 @@ function RemovedProfiles() {
     'Country',
     'Zipcode',
     'Phone Number',
-    'Reg Code',
+    'Reg No.',
     'Attorney',
   ];
 

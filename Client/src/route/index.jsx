@@ -5,7 +5,7 @@ import AdminDashboard from '../pages/adminDashboard.jsx';
 import NewUserLoginPage from '../pages/RegisterPage.jsx';
 import EmployeeDashboard from '../pages/EmployeeDashboard.jsx';
 import ForgotPassword from '../pages/ForgotPassword.jsx';
-import Insights from '../pages/Insights.jsx';
+import Insights from '../components/EmployeeDashboard/note.jsx';
 import Note from '../components/AdminDashBoard/IndivisualComponents/note.jsx';
 import Login from '../pages/LoginPage.jsx';
 

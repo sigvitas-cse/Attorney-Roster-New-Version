@@ -201,7 +201,7 @@ const InsightsData = () => {
     {
       id: 'company-leavers',
       title: 'Company Leavers',
-      headers: ['Company', 'Total Leavers', 'Reg Code', 'Name', 'Name Change', 'New Organization'],
+      headers: ['Company', 'Total Leavers', 'Reg No.', 'Name', 'Name Change', 'New Organization'],
       data: () => insights?.companyLeavers?.flatMap(company => 
         company.people.map(person => [
           company.company,
@@ -216,7 +216,7 @@ const InsightsData = () => {
     {
       id: 'top-movers',
       title: 'Top Movers',
-      headers: ['Reg Code', 'Name', 'Changed Fields'],
+      headers: ['Reg No.', 'Name', 'Changed Fields'],
       data: () => topMovers.map(mover => [
         mover.regCode,
         mover.name,
@@ -234,7 +234,7 @@ const InsightsData = () => {
     {
       id: 'name-changes',
       title: 'Name Changes',
-      headers: ['Reg Code', 'Old Name', 'New Name'],
+      headers: ['Reg No.', 'Old Name', 'New Name'],
       data: () => nameChanges.map(mover => [
         mover.regCode,
         mover.changes.Name.oldValue || 'N/A',
@@ -244,7 +244,7 @@ const InsightsData = () => {
     {
       id: 'organization-changes',
       title: 'Organization Changes',
-      headers: ['Reg Code', 'Name', 'Old Organization', 'New Organization'],
+      headers: ['Reg No.', 'Name', 'Old Organization', 'New Organization'],
       data: () => orgChanges.map(mover => [
         mover.regCode,
         mover.name,
@@ -255,7 +255,7 @@ const InsightsData = () => {
     {
       id: 'address-changes',
       title: 'Address Changes',
-      headers: ['Reg Code', 'Name', 'Old Address', 'New Address'],
+      headers: ['Reg No.', 'Name', 'Old Address', 'New Address'],
       data: () => addressChanges.map(mover => [
         mover.regCode,
         mover.name,
@@ -280,7 +280,7 @@ const InsightsData = () => {
     {
       id: 'phone-changes',
       title: 'Phone Number Changes',
-      headers: ['Reg Code', 'Name', 'Old Phone Number', 'New Phone Number'],
+      headers: ['Reg No.', 'Name', 'Old Phone Number', 'New Phone Number'],
       data: () => phoneChanges.map(mover => [
         mover.regCode,
         mover.name,
@@ -291,7 +291,7 @@ const InsightsData = () => {
     {
       id: 'status-changes',
       title: 'Status Changes',
-      headers: ['Reg Code', 'Name', 'Old Status', 'New Status'],
+      headers: ['Reg No.', 'Name', 'Old Status', 'New Status'],
       data: () => insights?.statusChangeDetails?.map(mover => [
         mover.regCode,
         mover.name,
@@ -302,7 +302,7 @@ const InsightsData = () => {
     {
       id: 'organization-movers',
       title: 'All Movers',
-      headers: ['Reg Code', 'Name', 'Name Change', 'Organization Change', 'Address Change', 'Phone Number Change', 'Status Change'],
+      headers: ['Reg No.', 'Name', 'Name Change', 'Organization Change', 'Address Change', 'Phone Number Change', 'Status Change'],
       data: () => insights?.organizationMovers?.map(mover => [
         mover.regCode,
         mover.name,

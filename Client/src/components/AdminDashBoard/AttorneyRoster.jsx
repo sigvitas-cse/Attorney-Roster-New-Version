@@ -39,7 +39,7 @@ const AttorneyRoster = () => {
     Country: "country",
     Zipcode: "zipcode",
     "Phone Number": "phoneNumber",
-    "Reg Code": "regCode",
+    "Reg No.": "regCode",
     Attorney: "agentAttorney",
     "Date of Patent": "dateOfPatent",
     "Agent Licensed": "agentLicensed",
