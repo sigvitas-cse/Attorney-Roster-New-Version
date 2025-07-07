@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import techBackground from '../assets/Indivisuals/indivisualbg9.jpg'; // Place a downloaded tech image here
+import techVideo from '../assets/Indivisuals/indivisualbg9.mp4'; // Place a downloaded tech image here
 
 const Home = () => {
   const [userType, setUserType] = useState('');
@@ -38,10 +38,19 @@ const Home = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center px-4 sm:px-6"
-      
-    >
+   <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden">
+
+      {/* 🔹 Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+      >
+        <source src={techVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 md:p-12 max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
         {/* Left Side */}
         <div>

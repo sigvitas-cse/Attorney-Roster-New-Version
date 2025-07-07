@@ -51,7 +51,7 @@ const Home = () => {
       </div>
 
       {/* Featured Image */}
-      <div className="w-full h-auto max-w-3xl mb-8">
+      <div className="w-full h-auto max-w-4xl mb-8">
         <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
           <img
             src={empdashboardpreview}

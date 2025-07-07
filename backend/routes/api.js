@@ -67,6 +67,8 @@ router.post('/guiestlogin', async (req, res) => {
 
 router.get('/verify-token', auth, async (req, res) => {
   try {
+    const { email } = req.body;
+    const userId = email;
     console.log('Verify-token: req.user', req.user);
     if (!req.user || !req.user.userId) {
       console.log('Verify-token: Invalid user data in req.user');

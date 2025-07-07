@@ -3,6 +3,10 @@ import { Outlet, useLocation } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+import techBackground from './assets/Indivisuals/indivisualbg9.jpg'; // Place a downloaded tech image here
+import techBackground2 from './assets/Indivisuals/indivisualbg4.jpg'; // Place a downloaded tech image here
+
+
 
 function App() {
   const location = useLocation();
@@ -39,14 +43,24 @@ function App() {
   };
 
   // Enhanced condition to handle variations in pathname
-  const showHeader = !['/AdminDashboard', '/AdminDashboard/','/EmployeeDashBoard', '/EmployeeDashBoard/'].includes(location.pathname);
+  const showHeader = !['/AdminDashboard', '/AdminDashboard/','/EmployeeDashBoard', '/EmployeeDashBoard/', '/explore', '/explore/', '/bigdata', '/bigdata/'].includes(location.pathname);
   console.log('Show Header:', showHeader, 'for pathname:', location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#F8FAFC] to-[#E2E8F0] font-['Inter',sans-serif]">
       {showHeader && <Header />}
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-0 ">
-        <div className="max-w-6xl w-full">
+      <main className="flex-1 flex items-center justify-center px-0 sm:py-0 sm:px-0 py-0 "
+      style={{
+              backgroundImage: `url(${techBackground})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}>
+        <div className="max-w-7xl w-full"
+        style={{
+              backgroundImage: `url(${techBackground2})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}>
           <Outlet
             context={{
               users,
@@ -67,7 +81,7 @@ function App() {
           />
         </div>
       </main>
-      {['/', '/Login', '/NewUserLoginPage', '/ForgotPassword'].includes(location.pathname) && <Footer />}
+      {['/', '/Login', '/NewUserLoginPage', '/ForgotPassword','/contact','/about'].includes(location.pathname) && <Footer />}
     </div>
   );
 }

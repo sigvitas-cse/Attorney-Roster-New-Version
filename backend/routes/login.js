@@ -1,9 +1,13 @@
+require('dotenv').config();
 const express = require("express");
 const LoginModel = require("../models/Login");
 const NewUsersLoginModel = require("../models/NewUsers");
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const router = express.Router();
+const Multipledata = require("../models/multipledata");
+const jwt = require('jsonwebtoken');
+
 
 
 // Login Route
@@ -168,6 +172,50 @@ router.post('/save-new-employee-details', async (req, res) => {
   } catch (err) {
     console.error('Error saving employee or sending email:', err);
     res.status(500).json({ message: 'An error occurred while saving the employee.' });
+  }
+});
+
+// ✅ Route: POST /api/check-multiple-user-login
+router.post('/check-multiple-user-login', async (req, res) => {
+  const { userId, password } = req.body;
+
+  if (!userId || !password) {
+    return res.status(400).json({ message: 'User ID and password are required.' });
+  }
+console.log('UserID:', userId, 'and password:', password);
+
+  try {
+    // console.log('inside try block');
+    
+    // 🔍 Find user by userId (no userType check)
+    const user = await Multipledata.findOne({ userId });
+    // const user1 = await Multipledata.countDocuments();
+    // const user2 = await Multipledata.find();
+
+
+    // console.log('length:', user1);
+    // console.log('user:', user2);
+    
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials.' });
+    }
+
+    // 🔐 Check password (bcrypt)
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials.' });
+    }
+
+    // ✅ Generate JWT
+    const token = jwt.sign({ userId: user.user._id }, process.env.JWT_SECRET, {
+      expiresIn: '2h'
+    });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.error('Multiple Search Login error:', error);
+    return res.status(500).json({ message: 'Server error during login.' });
   }
 });
 

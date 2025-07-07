@@ -8,6 +8,12 @@ import ForgotPassword from '../pages/ForgotPassword.jsx';
 import Insights from '../components/EmployeeDashboard/note.jsx';
 import Note from '../components/AdminDashBoard/IndivisualComponents/note.jsx';
 import Login from '../pages/LoginPage.jsx';
+import ExploreData from '../components/Home/ExploreData';
+import About from '../components/Home/About';
+import PrivacyPolicy from '../components/Home/PrivacyPolicy';
+import Contact from '../components/Home/Contact';
+import MultipleSearchLogin from '../components/Home/MultipleSearchLogin.jsx';
+import BigDataPage from '../components/Home/BigDataPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +51,30 @@ const router = createBrowserRouter([
       {
         path: 'note',
         element: <Note />,
+      },
+      {
+        path: 'explore',
+        element: <ExploreData/>,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'privacypolicy',
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: 'MultipleSearchLogin',
+        element: <MultipleSearchLogin />,
+      },
+      {
+        path: 'bigdata',
+        element: <BigDataPage />,
       },
     ],
   },

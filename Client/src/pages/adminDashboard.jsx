@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,6 +11,7 @@ import Analysis from "../components/AdminDashBoard/Analysis.jsx";
 import alldata from "../assets/alldata.png";
 import UsersImage from "../assets/users.png";
 import analysis from "../assets/analysis.png";
+import AdminImage from "../assets/AdminDashboardFeatures.mp4";
 
 
 // Welcome Component with Enhanced Content
@@ -42,7 +44,7 @@ const Welcome = () => {
       </div>
 
       {/* Featured Image */}
-      <div className="w-full max-w-3xl mb-8">
+      <div className="w-full max-w-4xl mb-8">
         <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
           <img
             src={alldata}
@@ -78,7 +80,7 @@ const Welcome = () => {
               poster="https://via.placeholder.com/400x200?text=Video+Loading"
             >
               <source
-                src="https://cdn.pixabay.com/video/2023/04/12/125627-824999141_h264.mp4"
+                src={AdminImage}
                 type="video/mp4"
               />
               Your browser does not support the video tag.
