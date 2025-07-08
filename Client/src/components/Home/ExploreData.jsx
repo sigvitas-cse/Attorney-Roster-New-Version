@@ -149,7 +149,7 @@ const Explore = () => {
                         onChange={(e) => setSearchField(e.target.value)}
                         className="w-full px-3 py-2 text-sm rounded-lg border border-[#CBD5E1] focus:ring-[#38BDF8] outline-none"
                       >
-                        <option value="regCode">Reg Code</option>
+                        <option value="regCode">Reg No.</option>
                         <option value="name">Name</option>
                         <option value="organization">Organization</option>
                         <option value="city">City</option>
@@ -211,7 +211,7 @@ const Explore = () => {
                         <tr>
                           {[
                             'Name', 'Organization', 'Address Line 1', 'Address Line 2', 'City',
-                            'State', 'Country', 'Zipcode', 'Phone', 'Reg Code',
+                            'State', 'Country', 'Zipcode', 'Phone', 'Reg No.',
                             'Attorney', 'Email'
                           ].map((col, idx) => (
                             <th key={idx} className="border border-[#CBD5E1] p-2 text-left bg-[#38BDF8] text-white font-semibold whitespace-nowrap">
@@ -270,7 +270,7 @@ const Explore = () => {
           <div className="bg-white rounded-xl p-6 shadow border border-sky-100">
             <h3 className="text-lg font-bold text-sky-700 mb-3">🔍 How It Works</h3>
             <ul className="text-sm text-gray-600 space-y-2">
-              <li>• Choose a search field like Name or Reg Code</li>
+              <li>• Choose a search field like Name or Reg No.</li>
               <li>• Enter a value or up to 5 comma-separated items</li>
               <li>• Single search for quick lookups</li>
               <li>• Multiple search requires login</li>

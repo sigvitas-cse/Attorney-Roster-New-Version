@@ -59,7 +59,7 @@ function IndivisualProfilesUpdated({ onClick }) {
             onChange={(e) => setSearchField(e.target.value)}
             className="p-2 border border-gray-400 rounded-md text-sm"
           >
-            <option value="regCode">Reg Code</option>
+            <option value="regCode">Reg No.</option>
             <option value="name">Name</option>
             <option value="organization">Organization</option>
             <option value="city">City</option>
@@ -97,7 +97,7 @@ function IndivisualProfilesUpdated({ onClick }) {
                   <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Country</th>
                   <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Zipcode</th>
                   <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Phone</th>
-                  <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Reg Code</th>
+                  <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Reg No.</th>
                   <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Attorney</th>
                   <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Date of Patent</th>
                   <th className="border border-gray-400 p-2 text-left bg-blue-500 text-white font-bold whitespace-nowrap">Agent Licensed</th>
