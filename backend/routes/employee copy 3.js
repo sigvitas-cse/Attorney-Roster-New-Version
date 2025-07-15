@@ -801,47 +801,7 @@ router.get("/suggestions", async (req, res) => {
 });
 
 
-router.get("/FullDataAccess", async (req, res) => {
-  const { query = '', page = 1 } = req.query;
-  const trimmed = query.trim();
-  const isNumber = /^\d+$/.test(trimmed);
-  const pageNumber = parseInt(page, 10) || 1;
-  const limit = 20;
-  const skip = (pageNumber - 1) * limit;
 
-  let searchFields = [];
-
-  if (isNumber && trimmed.length >= 5) {
-    searchFields = ['regCode'];
-  } else {
-    searchFields = ['name', 'organization', 'city', 'addressLine1', 'zipcode'];
-  }
-
-  const conditions = searchFields.map(field => ({
-    [field]: { $regex: new RegExp(trimmed, 'i') }
-  }));
-
-  try {
-    const filter = query ? { $or: conditions } : {}; // If empty, show all
-    const results = await UserModel.find(filter).skip(skip).limit(limit);
-    const totalCount = await UserModel.countDocuments(filter);
-
-    res.status(200).json({ results, totalCount });
-  } catch (err) {
-    console.error("❌ FullDataAccess error:", err.message);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
-
-router.get('/profile/:id', async (req, res) => {
-  try {
-    const profile = await UserModel.findById(req.params.id);
-    if (!profile) return res.status(404).json({ message: 'Profile not found' });
-    res.status(200).json(profile);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-});
 
 
 const storage = multer.memoryStorage(); // Store file in memory

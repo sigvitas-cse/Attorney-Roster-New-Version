@@ -23,7 +23,7 @@ const Welcome = () => {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
           Welcome to Triangle IP Admin Dashboard
         </h1>
-        <p className="text-lg md:text-xl mb-6 max-w-2xl">
+        <p className="text-lg md:text-xl mb-6 max-w-auto">
           Manage users, analyze data, and streamline your workflow with our powerful tools.
           Get started by selecting an option from the sidebar.
         </p>
@@ -44,7 +44,7 @@ const Welcome = () => {
       </div>
 
       {/* Featured Image */}
-      <div className="w-full max-w-4xl mb-8">
+      <div className="w-full max-w-6xl mb-8 mx-auto">
         <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
           <img
             src={alldata}
@@ -55,7 +55,7 @@ const Welcome = () => {
       </div>
 
       {/* Scrollable Content Section */}
-      <div className="w-full max-w-4xl mx-auto space-y-6 overflow-y-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-[#38BDF8]/50 scrollbar-track-[#E2E8F0]">
+      <div className="w-full max-w-6xl mx-auto space-y-6 overflow-y-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-[#38BDF8]/50 scrollbar-track-[#E2E8F0]">
         {/* Card 1: Image */}
         <div className="bg-white/10 p-4 rounded-lg shadow-md animate-slideUp">
           <h3 className="text-xl font-semibold mb-2">Dashboard Overview</h3>

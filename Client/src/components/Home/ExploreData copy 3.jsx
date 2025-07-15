@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUsers, FaUniversity, FaCity, FaSync } from 'react-icons/fa';
-import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi';
-import { HiOutlinePhone, HiOutlineMail, HiOutlineIdentification, HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { FiSearch, FiX } from 'react-icons/fi';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +19,8 @@ const Explore = () => {
   const [detectedField, setDetectedField] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
+
+
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,28 +29,37 @@ const Explore = () => {
     setIsLoggedIn(!!token);
   }, []);
 
+  
+
   const handleSearch = async (e) => {
+
     setSuggestions([]);
-    setIsInputFocused(false);
-    if (e?.preventDefault) e.preventDefault();
+    setIsInputFocused(false); // Hide suggestions after search
+
+    e.preventDefault();
+
     if (!searchQuery.trim()) {
       toast.error('Please enter a search query', { position: 'top-center' });
       setMatchingProfiles([]);
       setError('Please enter a search query.');
       return;
     }
+
     const queries = searchQuery.split(',').map((q) => q.trim()).filter(Boolean);
+
     if (queries.length > 1) {
-      if (!isLoggedIn) {
-        toast.info('Login required for multiple searches', { position: 'top-center' });
-        navigate('/MultipleSearchLogin');
-        return;
-      }
-      if (queries.length > 5) {
-        toast.error('Multiple search allows up to 5 entries.', { position: 'top-center' });
-        return;
-      }
-    }
+  if (!isLoggedIn) {
+    toast.info('Login required for multiple searches', { position: 'top-center' });
+    navigate('/MultipleSearchLogin');
+    return;
+  }
+  if (queries.length > 5) {
+    toast.error('Multiple search allows up to 5 entries.', { position: 'top-center' });
+    return;
+  }
+}
+
+
     try {
       const results = [];
       for (const query of queries) {
@@ -61,6 +70,7 @@ const Explore = () => {
           results.push(...response.data);
         }
       }
+
       setMatchingProfiles(results);
       setError(results.length === 0 ? 'No matching profiles found.' : '');
     } catch (err) {
@@ -71,79 +81,107 @@ const Explore = () => {
   };
 
   const handleSuggestionSearch = async (term) => {
-    try {
-      const response = await axios.get(`${API_URL}/api/IndivisualDataFetching`, {
-        params: { query: term }
-      });
-      if (Array.isArray(response.data) && response.data.length > 0) {
-        setMatchingProfiles(response.data);
-        setError('');
-      } else {
-        setMatchingProfiles([]);
-        setError('No matching profiles found.');
-      }
-    } catch (err) {
-      console.error('❌ Error fetching data from suggestion:', err);
-      toast.error('Server error occurred.', { position: 'top-center' });
+  try {
+    const response = await axios.get(`${API_URL}/api/IndivisualDataFetching`, {
+      params: { query: term }
+    });
+
+    if (Array.isArray(response.data) && response.data.length > 0) {
+      setMatchingProfiles(response.data);
+      setError('');
+    } else {
       setMatchingProfiles([]);
+      setError('No matching profiles found.');
     }
-  };
+  } catch (err) {
+    console.error('❌ Error fetching data from suggestion:', err);
+    toast.error('Server error occurred.', { position: 'top-center' });
+    setMatchingProfiles([]);
+  }
+};
+
 
   const copyToClipboard = (profile) => {
-    const contactDetails = `Name: ${profile.name}\nOrganization: ${profile.organization}\nPhone: ${profile.phoneNumber}\nEmail: ${profile.emailAddress}\nAddress: ${profile.addressLine1}${profile.addressLine2 ? ', ' + profile.addressLine2 : ''}, ${profile.city}, ${profile.state}, ${profile.country}, ${profile.zipcode}\nReg No.: ${profile.regCode}`.trim();
+    const contactDetails = `
+  Name: ${profile.name}
+  Organization: ${profile.organization}
+  Phone: ${profile.phoneNumber}
+  Email: ${profile.emailAddress}
+  Address: ${profile.addressLine1}${profile.addressLine2 ? ', ' + profile.addressLine2 : ''}, ${profile.city}, ${profile.state}, ${profile.country}, ${profile.zipcode}
+  Reg No.: ${profile.regCode}
+    `.trim();
+  
     navigator.clipboard.writeText(contactDetails)
       .then(() => {
+        console.log('✅ Copied to clipboard:', contactDetails);
         toast.success(`✔️ Contact info for "${profile.name}" copied!`, {
-          position: 'top-center', autoClose: 2000, theme: 'light'
+          position: 'top-center',
+          autoClose: 2000,
+          theme: 'light',
         });
       })
       .catch((err) => {
-        toast.error('❌ Failed to copy contact details.', { position: 'top-center' });
+        console.error('❌ Clipboard copy failed:', err);
+        toast.error('❌ Failed to copy contact details.', {
+          position: 'top-center'
+        });
       });
   };
 
-  function detectField(term) {
-    const trimmed = term.trim().toLowerCase();
-    if (/^\d{5,6}$/.test(trimmed)) return 'Reg No.';
-    if (/^\d{3}[-\s]?\d{3}[-\s]?\d{4}$/.test(trimmed)) return 'Phone';
-    if (/@|\.(com|org|net|edu)$/.test(trimmed)) return 'Email';
-    if (/^https?:\/\//.test(trimmed) || /^www\./.test(trimmed)) return 'URL';
-    if (/^\d+ [A-Za-z0-9]/.test(trimmed)) return 'Address';
-    const CITIES = ['new york', 'chicago', 'dallas', 'houston'];
-    const STATES = ['texas', 'california', 'florida'];
-    const ORGS = ['llp', 'llc', 'law', 'firm', 'ip'];
-    if (/^[a-z .\-']{3,}$/.test(trimmed)) {
-      if (CITIES.some(city => trimmed.includes(city))) return 'City';
-      if (STATES.some(state => trimmed.includes(state))) return 'State';
-      if (ORGS.some(org => trimmed.includes(org))) return 'Organization';
-      return 'Name';
-    }
-    return '';
+ function detectField(term) {
+  const trimmed = term.trim().toLowerCase();
+
+  if (/^\d{5,6}$/.test(trimmed)) return 'Reg No.';
+  if (/^\d{3}[-\s]?\d{3}[-\s]?\d{4}$/.test(trimmed)) return 'Phone';
+  if (/@|\.(com|org|net|edu)$/.test(trimmed)) return 'Email';
+  if (/^https?:\/\//.test(trimmed) || /^www\./.test(trimmed)) return 'URL';
+  if (/^\d+ [A-Za-z0-9]/.test(trimmed)) return 'Address';
+
+  const CITIES = ['new york', 'chicago', 'dallas', 'houston'];
+  const STATES = ['texas', 'california', 'florida'];
+  const ORGS = ['llp', 'llc', 'law', 'firm', 'ip'];
+
+  if (/^[a-z .\-']{3,}$/.test(trimmed)) {
+    if (CITIES.some(city => trimmed.includes(city))) return 'City';
+    if (STATES.some(state => trimmed.includes(state))) return 'State';
+    if (ORGS.some(org => trimmed.includes(org))) return 'Organization';
+    return 'Name';
   }
 
-  let debounceTimer;
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    setSuggestions([]);
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(async () => {
-      const trimmed = value.trim();
-      if (trimmed.length === 0) return;
-      try {
-        const res = await axios.get(`${API_URL}/api/suggestions`, { params: { query: trimmed } });
-        if (res.data?.suggestions?.length > 0) {
-          setSuggestions(res.data.suggestions);
-          setDetectedField(res.data.field);
-        }
-      } catch (err) {
-        console.error('❌ Suggestion error:', err.message);
+  return '';
+}
+
+
+ let debounceTimer;
+
+const handleInputChange = (e) => {
+  const value = e.target.value;
+  setSearchQuery(value);
+  setSuggestions([]);
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(async () => {
+    const trimmed = value.trim();
+    if (trimmed.length === 0) return;
+
+    try {
+      const res = await axios.get(`${API_URL}/api/suggestions`, {
+        params: { query: trimmed }
+      });
+      if (res.data?.suggestions?.length > 0) {
+        setSuggestions(res.data.suggestions);
+        setDetectedField(res.data.field); // Optional: show auto field
       }
-    }, 300);
-  };
+    } catch (err) {
+      console.error('❌ Suggestion error:', err.message);
+    }
+  }, 300); // Debounce 300ms
+};
+
+
   return (
-    <div className="max-w-full w-full flex justify-center bg-white">
-    <div className="max-w-7xl w-ful h-full flex flex-col bg-gradient-to-b from-[#F8FAFC] to-[#E2E8F0] text-[#1E293B] font-['Inter',sans-serif] relative ">
+    <div className="h-screen flex flex-col bg-gradient-to-b from-[#F8FAFC] to-[#E2E8F0] text-[#1E293B] font-['Inter',sans-serif] relative overflow-hidden">
       {/* Background SVG Decoration */}
       <div className="absolute inset-0 z-0">
         <svg className="w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720">
@@ -156,7 +194,7 @@ const Explore = () => {
       </div>
 
       {/* Fixed Header */}
-      <nav className="sticky top-0 z-10 px-6 sm:px-10 lg:px-20 py-4 text-sm text-gray-500 bg-white border-b border-gray-200">
+      <nav className="z-10 px-6 sm:px-10 lg:px-20 py-4 text-sm text-gray-500 bg-white/60 backdrop-blur border-b border-gray-200">
         <ol className="flex items-center space-x-2 max-w-7xl mx-auto">
           <li><a href="/" className="text-sky-600 hover:underline">Home</a></li>
           <li>/</li>
@@ -165,7 +203,7 @@ const Explore = () => {
       </nav>
 
       {/* Scrollable Main Content */}
-      <main className="z-0 px-6 sm:px-10 lg:px-20 pb-24 pt-10">
+      <main className="z-10 flex-1 overflow-y-auto scrollbar-w-0 px-6 sm:px-10 lg:px-20 pb-24 pt-10">
                 {/* Heading */}
                 <div className="mb-10 text-center">
                   <h1 className="text-4xl sm:text-5xl font-extrabold mb-3">Explore US Patent Attorney Data</h1>
@@ -174,7 +212,25 @@ const Explore = () => {
                   </p>
                 </div>
         
-               
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mb-8">
+                  
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                  <p className="text-2xl font-bold text-blue-600">32K+</p>
+                  <p className="text-sm text-gray-500">Total Attorneys</p>
+                </div>
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                  <p className="text-2xl font-bold text-sky-600">1.4K+</p>
+                  <p className="text-sm text-gray-500">Organizations</p>
+                </div>
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                  <p className="text-2xl font-bold text-emerald-600">500+</p>
+                  <p className="text-sm text-gray-500">Cities Covered</p>
+                </div>
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                  <p className="text-2xl font-bold text-purple-600">Updated</p>
+                  <p className="text-sm text-gray-500">Weekly</p>
+                </div>
+              </div>
         
         
                 {/* 🔐 Always-Visible Prompt */}
@@ -190,13 +246,12 @@ const Explore = () => {
                     .
                   </div>
                 )}
-                
         
                 {/* Search Panel */}
-                <div className="sticky top-10 min-w-full w-full z-50 flex justify-center bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-[#38BDF8]/20 mb-8">
-                  <form onSubmit={handleSearch} className="w-full max-w-4xl flex flex-col lg:flex-row gap-4 items-center">
+                <div className="flex justify-center bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-[#38BDF8]/20 mb-8">
+                  <form onSubmit={handleSearch} className="w-full max-w-2xl flex flex-col lg:flex-row gap-4 items-center">
                     
-                    <div className="w-full lg:w-[100%] relative">
+                    <div className="w-full lg:w-[70%] relative">
                        <input
                           type="text"
                           value={searchQuery}
@@ -204,7 +259,7 @@ const Explore = () => {
                           onFocus={() => setIsInputFocused(true)}
                           onBlur={() => setTimeout(() => setIsInputFocused(false), 100)}
                           placeholder="Search by name, reg no., org, city, etc."
-                          className="w-full px-4 py-3 pr-14 pl-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-sky-400 text-sm shadow-sm outline-none"
+                          className="w-full px-4 py-2 pr-14 pl-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-sky-400 text-sm shadow-sm outline-none"
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') handleSearch(e);
                           }}
@@ -218,11 +273,10 @@ const Explore = () => {
                             className="absolute right-10 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 text-lg"
                             title="Clear"
                           >
-                            <HiOutlineX />
+                            <FiX />
                           </button>
                         )}
 
-                
                         {/* Search Icon */}
                         <button
                           type="button"
@@ -230,7 +284,7 @@ const Explore = () => {
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-sky-600 text-lg"
                           title="Search"
                         >
-                          <HiOutlineSearch />
+                          <FiSearch />
                         </button>
                       {isInputFocused && suggestions.length > 0 && (
                         <ul className="absolute top-full left-0 bg-white border border-gray-200 mt-1 z-50 rounded shadow text-sm max-h-48 overflow-y-auto scrollbar-w-0 w-full">
@@ -260,56 +314,31 @@ const Explore = () => {
                      
                   </form>
                 </div>
-                <div className=" bg-white/80 backdrop-blur-sm border border-sky-100 p-3 rounded-xl mb-6 text-xs text-slate-600 shadow-sm ">
-                  💡 Tip: You can search by name, reg code, city, org, or email — even partial terms like “Smith” or “LLP”.
-                </div>
-
         
-                  <div className="mb-6">
-                    <h4 className="text-sm text-slate-600 font-semibold mb-2">Popular Queries</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {['Attorney','Agent', 'LLP', 'chicago', 'New York', 'Columbia Law'].map((term) => (
-                        <button
-                          key={term}
-                          onClick={() => {
-                            setSearchQuery(term);
-                            handleSuggestionSearch(term);
-                          }}
-                          className="bg-sky-50 text-sky-700 text-xs px-3 py-1 rounded-full hover:bg-sky-100 transition"
-                        >
-                          {term}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
+                <div className="text-xs text-gray-600 bg-sky-50 p-4 rounded-lg border border-sky-100 mb-6">
+                💡 <span className="font-semibold">Tip:</span> Searching “apple” in organization may return Apple Inc., Apple IP, etc. Use commas for bulk search.
+              </div>
         
         
                 {/* Error Message */}
                 {error && <p className="text-red-500 font-semibold text-sm mb-4 text-center">{error}</p>}
         
-                <div className="bg-white shadow-sm border border-gray-100 p-4 rounded-xl mb-6 flex flex-wrap justify-between items-center text-sm text-slate-700">
-                <span>🔍 <strong>{matchingProfiles.length}</strong> matches found</span>
-                <span>📅 Updated weekly • Last sync: <strong>July 26, 2024</strong></span>
-              </div>
-
-                      
                 {/* Results Business Cards */}
                         {matchingProfiles.length > 0 && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {matchingProfiles.map((profile, index) => (
                               <div
                                 key={index}
-                                className="relative group bg-white rounded-0 border border-[#38BDF8]/20 shadow-md hover:shadow-2xl transition-transform duration-300 ease-in-out h-[360px] overflow-hidden flex flex-col before:absolute before:inset-0 before:bg-[#38BDF8] before:h-2 before:top-0 before:z-0 group-hover:before:h-full before:transition-all before:duration-300"
+                                className="relative group bg-white rounded-xl border border-[#38BDF8]/20 shadow-md hover:shadow-2xl transition-transform duration-300 ease-in-out h-[400px] overflow-hidden flex flex-col before:absolute before:inset-0 before:bg-[#38BDF8] before:h-2 before:top-0 before:z-0 group-hover:before:h-full before:transition-all before:duration-300"
                               >
                                 <div className="relative z-10 flex flex-col h-full">
                                   {/* 1. Profile Image Section */}
-                                  <div className="h-1/2 group-hover:h-[50%] transition-all duration-300 flex justify-center items-center bg-sky-700 hover:bg-sky-950">
+                                  <div className="h-1/2 group-hover:h-[45%] transition-all duration-300 flex justify-center items-center">
                                     {profile.profileImage ? (
                                       <img
                                         src={profile.profileImage}
                                         alt={`${profile.name}'s profile`}
-                                        className="w-40 h-40 rounded-full object-cover border-4 border-[#38BDF8]/40 shadow-md"
+                                        className="w-28 h-28 rounded-full object-cover border-4 border-[#38BDF8]/40 shadow-md"
                                       />
                                     ) : (
                                       <svg
@@ -321,40 +350,22 @@ const Explore = () => {
                                       </svg>
                                     )}
                                   </div>
-
-                                  {/* <div className="border-t border-gray-200 my-2"></div> */}
-
                 
                                   {/* 2. Contact Info Section */}
-                                  <div className="h-1/2 group-hover:h-[50%] transition-all duration-300 px-4 pt-2 overflow-hidden text-left">
-                                    <div className="space-y-[6px] text-[14px] text-slate-800 leading-tight">
-                                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1">{profile.name}</h3>
-                                      {profile.agentAttorney && (
-                                        <p className="text-sky-600 italic font-medium text-[13px]">{profile.agentAttorney}</p>
-                                      )}
-                                      <p className="flex items-center gap-2">
-                                        <HiOutlineOfficeBuilding className="text-sky-600 text-lg" />
-                                        <span className="text-sm text-gray-700 truncate">{profile.organization}</span>
-                                      </p>
-                                      <p className="flex items-center gap-2">
-                                        <HiOutlineIdentification className="text-sky-600 text-lg" />
-                                        <span className="text-sm text-gray-700">{profile.regCode}</span>
-                                      </p>
-                                      <p className="flex items-center gap-2">
-                                        <HiOutlinePhone className="text-sky-600 text-lg" />
-                                        <span className="text-sm text-gray-700">{profile.phoneNumber}</span>
-                                      </p>
-                                      <p className="flex items-center gap-2">
-                                        <HiOutlineMail className="text-sky-600 text-lg" />
-                                        <span className="text-sm text-gray-700 truncate">{profile.emailAddress}</span>
-                                      </p>
+                                  <div className="h-1/2 group-hover:h-[35%] transition-all duration-300 px-4 overflow-hidden">
+                                    <div className="text-center space-y-1 text-sm text-gray-700">
+                                      <h3 className="text-base font-bold text-gray-800">{profile.name}</h3>
+                                      <p className="text-sm text-sky-600 italic">{profile.agentAttorney}</p>
+                                      <p><span className="font-semibold">Org:</span> {profile.organization}</p>
+                                      <p><span className="font-semibold">Reg No.:</span> {profile.regCode}</p>
+                                      <p><span className="font-semibold">Phone:</span> {profile.phoneNumber}</p>
+                                      <p><span className="font-semibold">Email:</span> {profile.emailAddress}</p>
                                     </div>
                                   </div>
-
                                 </div>
                 
                                 {/* 3. Buttons Section (slide in) */}
-                                <div className="h-0 group-hover:h-[20%] transition-all duration-300 px-4 bg-sky-950 text-white text-sm flex justify-between items-center opacity-0 group-hover:opacity-100">
+                                <div className="h-0 group-hover:h-[20%] transition-all duration-300 px-4 bg-[#38BDF8] text-white text-sm flex justify-between items-center opacity-0 group-hover:opacity-100">
                                   <button
                                     onClick={() => copyToClipboard(profile)}
                                     className="hover:underline"
@@ -373,9 +384,7 @@ const Explore = () => {
                             ))}
                           </div>
                         )}
-                        
         
-
                 {/* Footer Buttons */}
                 <div className="mt-10 text-center flex flex-col sm:flex-row justify-center items-center gap-4">
                   <button
@@ -398,86 +407,6 @@ const Explore = () => {
                   )}
                 </div>
                 {/* ===== Additional Bottom Content Section ===== */}
-
-                
-
-                    
-
-
-
-        <section className="bg-gradient-to-r from-emerald-50 to-white border border-emerald-200 p-4 rounded-xl shadow mt-10 mb-10">
-          <h4 className="text-sm text-emerald-800 font-bold mb-2">🧠 AI Suggests:</h4>
-          <p className="text-xs text-slate-700">Users who searched for "<strong>Columbia Law</strong>" also searched for:</p>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {['New York', 'Harvard Law', 'USPTO', 'Agent'].map(term => (
-              <button
-                key={term}
-                onClick={() => {
-                  setSearchQuery(term);
-                  handleSuggestionSearch(term);
-                }}
-                className="bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full hover:bg-emerald-200 transition"
-              >
-                {term}
-              </button>
-            ))}
-          </div>
-        </section>
-
-
-        <section className="bg-blue-50 border border-blue-100 p-6 rounded-xl shadow text-sm my-10">
-          <h3 className="text-lg font-bold text-blue-800 mb-3">📘 Glossary</h3>
-          <ul className="space-y-2 text-gray-700">
-            <li><strong>Reg Code:</strong> Unique registration number assigned to a patent attorney/agent.</li>
-            <li><strong>Organization:</strong> The law firm or IP entity the individual is affiliated with.</li>
-            <li><strong>Agent vs Attorney:</strong> Attorneys are licensed to practice law; agents are certified by the USPTO to represent inventors.</li>
-          </ul>
-        </section>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mb-10">
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaUsers className="mx-auto text-blue-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-blue-700">32K+</p>
-            <p className="text-xs text-gray-500">Attorneys</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaUniversity className="mx-auto text-sky-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-sky-700">1.4K+</p>
-            <p className="text-xs text-gray-500">Organizations</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaCity className="mx-auto text-emerald-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-emerald-700">500+</p>
-            <p className="text-xs text-gray-500">Cities</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaSync className="mx-auto text-purple-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-purple-700">Weekly</p>
-            <p className="text-xs text-gray-500">Updates</p>
-          </div>
-        </div>
-
-          <section className="bg-gradient-to-r from-sky-50 to-white border border-sky-100 p-4 rounded-xl shadow mt-10 mb-10 text-sm text-slate-700">
-              📈 <strong>Trend:</strong> Most new registrations in the last 6 months are from California and New York.
-           </section>
-
-           <section className="mt-16 max-w-4xl mx-auto bg-white border border-gray-200 p-6 rounded-xl shadow">
-  <h3 className="text-xl font-bold text-center mb-4">🗣️ What Our Users Say</h3>
-  <div className="space-y-4">
-    <blockquote className="border-l-4 border-sky-500 pl-4 italic text-gray-600">
-      "This platform has transformed the way I find patent attorneys. Highly recommend!" 
-      <footer className="mt-2">— Jane Doe, Patent Researcher</footer>
-    </blockquote>
-    <blockquote className="border-l-4 border-sky-500 pl-4 italic text-gray-600">
-      "The search functionality is intuitive and saves me a lot of time." 
-      <footer className="mt-2">— John Smith, IP Analyst</footer>
-    </blockquote>
-  </div>
-</section>
-
-
-
-                          
         <section className="relative mt-20 border-t border-gray-200 pt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         
           {/* How It Works */}
@@ -583,7 +512,6 @@ const Explore = () => {
           </form>
         </section>
       </main>
-    </div>
     </div>
   );
 };

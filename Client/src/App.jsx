@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Outlet, useLocation } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header.jsx';
@@ -21,6 +22,7 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
+  
 
   const handleFilterChange = (event) => {
     setFilters({ ...filters, [event.target.name]: event.target.value });
@@ -41,9 +43,20 @@ function App() {
   const toggleForm = () => {
     setShowForm(!showForm);
   };
+  const hidePaths = [
+  '/AdminDashboard',
+  '/EmployeeDashBoard',
+  '/explore',
+  '/bigdata'
+];
+
+const showHeader = !(
+  hidePaths.includes(location.pathname.replace(/\/$/, '')) ||
+  location.pathname.startsWith('/profile/')
+);
 
   // Enhanced condition to handle variations in pathname
-  const showHeader = !['/AdminDashboard', '/AdminDashboard/','/EmployeeDashBoard', '/EmployeeDashBoard/', '/explore', '/explore/', '/bigdata', '/bigdata/'].includes(location.pathname);
+  // const showHeader = !['/AdminDashboard', '/AdminDashboard/','/EmployeeDashBoard', '/EmployeeDashBoard/', '/explore', '/explore/', '/bigdata', '/bigdata/', '/profile/:id/', '/profile/:id'].includes(location.pathname);
   console.log('Show Header:', showHeader, 'for pathname:', location.pathname);
 
   return (
@@ -55,7 +68,10 @@ function App() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}>
-        <div className="max-w-7xl w-full"
+        {/* <div className="max-w-7xl w-full" */}
+        {/* <div className="max-w-[1600px] w-full" */}
+        <div className="max-w-full w-full"
+
         style={{
               backgroundImage: `url(${techBackground2})`,
               backgroundSize: 'cover',
@@ -82,6 +98,20 @@ function App() {
         </div>
       </main>
       {['/', '/Login', '/NewUserLoginPage', '/ForgotPassword','/contact','/about'].includes(location.pathname) && <Footer />}
+
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUsers, FaUniversity, FaCity, FaSync } from 'react-icons/fa';
+import { FiSearch, FiX } from 'react-icons/fi';
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi';
 import { HiOutlinePhone, HiOutlineMail, HiOutlineIdentification, HiOutlineOfficeBuilding } from 'react-icons/hi';
 import axios from 'axios';
@@ -193,8 +193,8 @@ const Explore = () => {
                 
         
                 {/* Search Panel */}
-                <div className="sticky top-10 min-w-full w-full z-50 flex justify-center bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-[#38BDF8]/20 mb-8">
-                  <form onSubmit={handleSearch} className="w-full max-w-4xl flex flex-col lg:flex-row gap-4 items-center">
+                <div className="flex justify-center bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-[#38BDF8]/20 mb-8">
+                  <form onSubmit={handleSearch} className="w-full max-w-2xl flex flex-col lg:flex-row gap-4 items-center">
                     
                     <div className="w-full lg:w-[100%] relative">
                        <input
@@ -260,40 +260,12 @@ const Explore = () => {
                      
                   </form>
                 </div>
-                <div className=" bg-white/80 backdrop-blur-sm border border-sky-100 p-3 rounded-xl mb-6 text-xs text-slate-600 shadow-sm ">
-                  💡 Tip: You can search by name, reg code, city, org, or email — even partial terms like “Smith” or “LLP”.
-                </div>
-
         
-                  <div className="mb-6">
-                    <h4 className="text-sm text-slate-600 font-semibold mb-2">Popular Queries</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {['Attorney','Agent', 'LLP', 'chicago', 'New York', 'Columbia Law'].map((term) => (
-                        <button
-                          key={term}
-                          onClick={() => {
-                            setSearchQuery(term);
-                            handleSuggestionSearch(term);
-                          }}
-                          className="bg-sky-50 text-sky-700 text-xs px-3 py-1 rounded-full hover:bg-sky-100 transition"
-                        >
-                          {term}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
         
         
                 {/* Error Message */}
                 {error && <p className="text-red-500 font-semibold text-sm mb-4 text-center">{error}</p>}
         
-                <div className="bg-white shadow-sm border border-gray-100 p-4 rounded-xl mb-6 flex flex-wrap justify-between items-center text-sm text-slate-700">
-                <span>🔍 <strong>{matchingProfiles.length}</strong> matches found</span>
-                <span>📅 Updated weekly • Last sync: <strong>July 26, 2024</strong></span>
-              </div>
-
-                      
                 {/* Results Business Cards */}
                         {matchingProfiles.length > 0 && (
                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
@@ -401,82 +373,29 @@ const Explore = () => {
 
                 
 
-                    
+                        <div className="text-xs text-gray-600 bg-sky-50 p-4 rounded-lg border border-sky-100 mt-6 mb-6">
+                          💡 <span className="font-semibold">Tip:</span> Searching “apple” may return matches like Apple Inc., Apple IP LLP, etc., across name, organization, or firm fields.
+                        </div>
 
-
-
-        <section className="bg-gradient-to-r from-emerald-50 to-white border border-emerald-200 p-4 rounded-xl shadow mt-10 mb-10">
-          <h4 className="text-sm text-emerald-800 font-bold mb-2">🧠 AI Suggests:</h4>
-          <p className="text-xs text-slate-700">Users who searched for "<strong>Columbia Law</strong>" also searched for:</p>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {['New York', 'Harvard Law', 'USPTO', 'Agent'].map(term => (
-              <button
-                key={term}
-                onClick={() => {
-                  setSearchQuery(term);
-                  handleSuggestionSearch(term);
-                }}
-                className="bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full hover:bg-emerald-200 transition"
-              >
-                {term}
-              </button>
-            ))}
-          </div>
-        </section>
-
-
-        <section className="bg-blue-50 border border-blue-100 p-6 rounded-xl shadow text-sm my-10">
-          <h3 className="text-lg font-bold text-blue-800 mb-3">📘 Glossary</h3>
-          <ul className="space-y-2 text-gray-700">
-            <li><strong>Reg Code:</strong> Unique registration number assigned to a patent attorney/agent.</li>
-            <li><strong>Organization:</strong> The law firm or IP entity the individual is affiliated with.</li>
-            <li><strong>Agent vs Attorney:</strong> Attorneys are licensed to practice law; agents are certified by the USPTO to represent inventors.</li>
-          </ul>
-        </section>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mb-10">
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaUsers className="mx-auto text-blue-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-blue-700">32K+</p>
-            <p className="text-xs text-gray-500">Attorneys</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaUniversity className="mx-auto text-sky-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-sky-700">1.4K+</p>
-            <p className="text-xs text-gray-500">Organizations</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaCity className="mx-auto text-emerald-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-emerald-700">500+</p>
-            <p className="text-xs text-gray-500">Cities</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 shadow border">
-            <FaSync className="mx-auto text-purple-600 text-2xl mb-1" />
-            <p className="text-xl font-bold text-purple-700">Weekly</p>
-            <p className="text-xs text-gray-500">Updates</p>
-          </div>
-        </div>
-
-          <section className="bg-gradient-to-r from-sky-50 to-white border border-sky-100 p-4 rounded-xl shadow mt-10 mb-10 text-sm text-slate-700">
-              📈 <strong>Trend:</strong> Most new registrations in the last 6 months are from California and New York.
-           </section>
-
-           <section className="mt-16 max-w-4xl mx-auto bg-white border border-gray-200 p-6 rounded-xl shadow">
-  <h3 className="text-xl font-bold text-center mb-4">🗣️ What Our Users Say</h3>
-  <div className="space-y-4">
-    <blockquote className="border-l-4 border-sky-500 pl-4 italic text-gray-600">
-      "This platform has transformed the way I find patent attorneys. Highly recommend!" 
-      <footer className="mt-2">— Jane Doe, Patent Researcher</footer>
-    </blockquote>
-    <blockquote className="border-l-4 border-sky-500 pl-4 italic text-gray-600">
-      "The search functionality is intuitive and saves me a lot of time." 
-      <footer className="mt-2">— John Smith, IP Analyst</footer>
-    </blockquote>
-  </div>
-</section>
-
-
-
+                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mb-8">
+                  
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                              <p className="text-2xl font-bold text-blue-600">32K+</p>
+                              <p className="text-sm text-gray-500">Total Attorneys</p>
+                            </div>
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                              <p className="text-2xl font-bold text-sky-600">1.4K+</p>
+                              <p className="text-sm text-gray-500">Organizations</p>
+                            </div>
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                              <p className="text-2xl font-bold text-emerald-600">500+</p>
+                              <p className="text-sm text-gray-500">Cities Covered</p>
+                            </div>
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                              <p className="text-2xl font-bold text-purple-600">Updated</p>
+                              <p className="text-sm text-gray-500">Weekly</p>
+                            </div>
+                          </div>
                           
         <section className="relative mt-20 border-t border-gray-200 pt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         

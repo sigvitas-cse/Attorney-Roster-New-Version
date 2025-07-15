@@ -14,6 +14,7 @@ import PrivacyPolicy from '../components/Home/PrivacyPolicy';
 import Contact from '../components/Home/Contact';
 import MultipleSearchLogin from '../components/Home/MultipleSearchLogin.jsx';
 import BigDataPage from '../components/Home/BigDataPage.jsx';
+import ProfileDetail from '../pages/ProfileDetail.jsx';
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,11 @@ const router = createBrowserRouter([
         path: 'bigdata',
         element: <BigDataPage />,
       },
+      {
+        path: 'profile/:id',
+        element: <ProfileDetail />,
+      },
+
     ],
   },
 ]);

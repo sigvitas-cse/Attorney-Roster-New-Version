@@ -51,7 +51,7 @@ const Home = () => {
       </div>
 
       {/* Featured Image */}
-      <div className="w-full h-auto max-w-4xl mb-8">
+      <div className="w-full h-auto max-w-6xl mb-8 mx-auto">
         <div className="relative aspect-video bg-[#1E293B]/20 rounded-lg overflow-hidden">
           <img
             src={empdashboardpreview}
@@ -62,7 +62,7 @@ const Home = () => {
       </div>
 
       {/* Scrollable Content Section */}
-      <div className="w-full max-w-4xl mx-auto space-y-6 overflow-y-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-[#38BDF8]/50 scrollbar-track-[#E2E8F0]">
+      <div className="w-full max-w-6xl mx-auto space-y-6 overflow-y-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-[#38BDF8]/50 scrollbar-track-[#E2E8F0]">
         {/* Card 1: Live Data Preview */}
         <div className="bg-white/10 p-4 rounded-lg shadow-md animate-slideUp">
           <h3 className="text-xl font-semibold mb-2">Live Data Overview</h3>
